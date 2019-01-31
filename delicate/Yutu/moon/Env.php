@@ -60,7 +60,7 @@ EOT;
      * @param null $default
      * @return array|mixed|null
      */
-    public static function Config(string $key = "", $default = null)
+    public static function Config($key = "", $default = null)
     {
         if (!self::$isLoad)
         {

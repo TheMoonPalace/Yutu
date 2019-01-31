@@ -63,7 +63,7 @@ class Bootstrap
     /**
      * @param string $undefined
      */
-    private function help(string $undefined = "")
+    private function help($undefined = "")
     {
         if (!empty($undefined))
         {
