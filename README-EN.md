@@ -1,6 +1,6 @@
 [中文](./README.md) | English
 
-Yutu-swoole
+Yutu
 ====
 *The Based Swoole Lightweight PHP-HTTP Server Framework*
 ![](./moon/yutu.png)

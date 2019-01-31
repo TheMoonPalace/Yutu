@@ -1,6 +1,6 @@
 中文 | [English](./README-EN.md)
 
-Yutu-swoole
+Yutu
 ====
 *基于Swoole，为API开发而设计简单易上手的轻量级PHP-HTTP服务器框架*
 ![](./moon/yutu.png)
