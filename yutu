@@ -1,0 +1,5 @@
+#!/usr/bin/env php
+<?php
+if (version_compare(PHP_VERSION, "7.1", "<")) exit("PHP version is too low, need 7.1+");
+if (version_compare(SWOOLE_VERSION, "4.2.12", "<")) exit("Swoole version is too low, need 4.2.12+");
+const vendor = "delicate"; require_once __DIR__ . "/" . vendor . "/Yutu/Bootstrap.php"; new \Yutu\Bootstrap(__DIR__);

@@ -1,8 +1,8 @@
-中文 | [English](./README-EN.md)
+[中文](./README.md) | English
 
 Yutu-swoole
 ====
-*基于Swoole，为API开发而设计简单易上手的轻量级PHP-HTTP服务器框架*
+*The Based Swoole Lightweight PHP-HTTP Server Framework*
 ![](./moon/yutu.png)
 
 ### Installation
@@ -43,7 +43,7 @@ $ ./yutu start [app name]
 ```
 
 ### Config
-下载完后可以进行项目初始化 run ./yutu init, 框架会自动生成配置文件：your app/config.yml
+configuration files：your app/config.yml
 ```yaml
 # server port
 #port: 8080
