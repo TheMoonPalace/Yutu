@@ -1,6 +1,6 @@
 [中文](./README.md) | English
 
-Yutu-swoole
+Yutu
 ====
 *The Based Swoole Lightweight PHP-HTTP Server Framework*
 ![](./moon/yutu.png)
@@ -10,10 +10,10 @@ Yutu-swoole
 - Swoole4.2.12+
 - PHP7.1+
 ```git
-$ git cloen https://github.com/TheMoonPalace/Yutu-swoole.git
+$ git cloen https://github.com/TheMoonPalace/Yutu.git
 ```
 ```sybase
-$ curl 'https://github.com/TheMoonPalace/Yutu-swoole/archive/...'
+$ curl 'https://github.com/TheMoonPalace/Yutu/archive/...'
 ```
 
 ### Quick start
@@ -31,7 +31,7 @@ class api extends http\controller
 {
     public function get()
     {
-        // OR $this->writeAll("Welcome To The Moon Palace");
+        // OR $this->WriteAll("Welcome To The Moon Palace");
         return "Welcome To The Moon Palace";
     }
 

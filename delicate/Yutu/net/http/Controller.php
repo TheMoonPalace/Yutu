@@ -24,6 +24,6 @@ class Controller
         $this->request  = $request;
         $this->response = $response;
 
-        $this->setHeader("server", "Yutu");
+        $this->SetHeader("server", "Yutu");
     }
 }

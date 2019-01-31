@@ -17,19 +17,19 @@ trait Request
     public $request;
 
     // TODO getStatus
-    public function getStatus()
+    public function GetStatus()
     {
 
     }
 
     // TODO getHeader
-    public function getHeader()
+    public function GetHeader()
     {
 
     }
 
     // TODO getCookie
-    public function getCookie()
+    public function GetCookie()
     {
 
     }
