@@ -69,7 +69,7 @@ class Event implements IServerEvent
         $handles = explode("/", $uri);
 
         if (empty($handles[1])) {
-            $ctr->writeAll(null, "404 Not Found", 404); return ;
+            $ctr->WriteAll(null, "404 Not Found", 404); return ;
         }
 
         $handle = "app\\controller\\" . $handles[1];
@@ -79,20 +79,20 @@ class Event implements IServerEvent
             $hd = new $handle($request, $response);
 
             if (!method_exists($hd, $handleFunc)) {
-                $ctr->writeAll(null, "Method Not Found: $handleFunc", 404); return ;
+                $ctr->WriteAll(null, "Method Not Found: $handleFunc", 404); return ;
             }
 
             $res = $hd->{$handleFunc}();
-            !method_exists($hd, "writeAll") ? $ctr->writeAll($res) : !$hd->isReturn && $hd->writeAll($res);
+            !method_exists($hd, "writeAll") ? $ctr->WriteAll($res) : !$hd->isReturn && $hd->WriteAll($res);
         } catch (\ParseError $e) {
             Logger::Exception($e);
-            $ctr->writeAll(null, "Internal Server Error", 500);
+            $ctr->WriteAll(null, "Internal Server Error", 500);
         } catch (\Exception $e) {
             Logger::Exception($e);
-            $ctr->writeAll(null, "Internal Server Error", 500);
+            $ctr->WriteAll(null, "Internal Server Error", 500);
         } catch (\Error $e) {
             Logger::Exception($e);
-            $ctr->writeAll(null, "Internal Server Error", 500);
+            $ctr->WriteAll(null, "Internal Server Error", 500);
         }
     }
 

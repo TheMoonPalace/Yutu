@@ -27,7 +27,7 @@ trait Response
      * @param string $msg
      * @param int $code
      */
-    public function write($data, $msg = '', $code = 200)
+    public function Write($data, $msg = '', $code = 200)
     {
         $data = $this->format($code, $data, $msg);
         $this->response->write($data);
@@ -39,7 +39,7 @@ trait Response
      * @param string $msg
      * @param int $code
      */
-    public function writeAll($data, $msg = '', $code = 200)
+    public function WriteAll($data, $msg = '', $code = 200)
     {
         $data = $this->format($code, $data, $msg);
         $this->response->end($data);
@@ -50,7 +50,7 @@ trait Response
      * $this->response->sendfile()
      * @param $fileName
      */
-    public function sendFile($fileName)
+    public function SendFile($fileName)
     {
         $this->response->sendfile($fileName);
     }
@@ -60,7 +60,7 @@ trait Response
      * @param $key
      * @param $value
      */
-    public function setCookie($key, $value)
+    public function SetCookie($key, $value)
     {
         if (empty($key)) {
             return ;
@@ -74,7 +74,7 @@ trait Response
      * @param $key
      * @param $value
      */
-    public function setHeader($key, $value)
+    public function SetHeader($key, $value)
     {
         if (empty($key)) {
             return ;
@@ -87,7 +87,7 @@ trait Response
      * $this->response->status()
      * @param $code
      */
-    public function setStatus($code)
+    public function SetStatus($code)
     {
         $this->response->status($code);
     }
