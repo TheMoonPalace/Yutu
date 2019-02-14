@@ -13,7 +13,7 @@ use Yutu\helper\Logger;
 
 class Env
 {
-    const YUTU_VERSION        = 0.01;               // 版本号
+    const YUTU_VERSION        = 0.02;               // 版本号
     const YUTU_PID_FILE       = "ytserver.pid";     // pid 文件名
     const YUTU_LOG_FILE       = "info.log";         // 日志文件名
     const YUTU_CONF_FILE      = "config.yml";       // 配置文件名
