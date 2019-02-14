@@ -52,22 +52,13 @@ interface IServerEvent
 
     /**
      * on task
-     * 此处开启了task_enable_coroutine，所以只有两个参数(swoole4.2.12以上版本可用)
      * @param \Swoole\Server $server
-     * @param \Swoole\Server\Task $task
-     * //来自哪个`Worker`进程
-     * $task->workerId;
-     * //任务的编号
-     * $task->id;
-     * //任务的类型，taskwait, task, taskCo, taskWaitMulti 可能使用不同的 flags
-     * $task->flags;
-     * //任务的数据
-     * $task->data;
-     * //完成任务，结束并返回数据
-     * $task->finish([123, 'hello']);
+     * @param $task_id
+     * @param $src_worker_id
+     * @param $data
      * @return mixed
      */
-    public static function Task(\Swoole\Server $server, \Swoole\Server\Task $task);
+    public static function Task(\Swoole\Server $server, $task_id, $src_worker_id,  $data);
 
     /**
      * on task finish

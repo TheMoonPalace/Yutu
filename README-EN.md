@@ -2,7 +2,7 @@
 
 Yutu
 ====
-*The Based Swoole Lightweight PHP-HTTP Server Framework*
+*The Based Swoole Lightweight PHP-Api Server Framework*
 ![](./moon/yutu.png)
 
 ### Installation
@@ -11,9 +11,6 @@ Yutu
 - PHP7.1+
 ```git
 $ git cloen https://github.com/TheMoonPalace/Yutu.git
-```
-```sybase
-$ curl 'https://github.com/TheMoonPalace/Yutu/archive/...'
 ```
 
 ### Quick start
@@ -54,6 +51,3 @@ configuration files：your app/config.yml
 # worker process number
 #work-num:2
 ```
-
-### TODO
-- [ ] ......

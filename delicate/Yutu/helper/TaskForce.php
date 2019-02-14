@@ -10,7 +10,7 @@ namespace Yutu\helper;
 
 
 use Yutu\interfaces\ITask;
-use Yutu\helper\TaskTable;
+use Yutu\types\TaskTable;
 
 class TaskForce
 {
@@ -60,7 +60,7 @@ class TaskForce
             // 修改进程名
             swoole_set_process_name("YT-TaskFc");
 
-            // 装入zuoye
+            // 装入作业
             $this->loadTask(APP_PATH, "app");
             $this->loadTask(YUTU_PATH, "Yutu");
 

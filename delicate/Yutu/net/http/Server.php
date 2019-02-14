@@ -54,16 +54,14 @@ class Server
         // 当前允许启动多个相同服务，框架层面不限制
         $this->http = new \Swoole\http\Server("0.0.0.0", Env::Config("port", 8080));
 
-        // TODO 设置swoole的相关配置
-        // 此处task_worker_num 默认为一个线程，后期有需要再更改
+        // 设置swoole的相关配置
         $this->http->set([
             'pid_file'  => PATH_CACHE . '/' . Env::YUTU_PID_FILE,
             'log_file'  => PATH_LOGS . '/' . Env::YUTU_LOG_FILE,
             'log_level' => SWOOLE_LOG_INFO, // swoole 日志等级 https://wiki.swoole.com/wiki/page/538.html
             'daemonize'  => Env::Config("daemonize", false),
-            'worker_num' => Env::Config("work-num", 4),
-            'task_worker_num' => 5,
-            'task_enable_coroutine' => true,
+            'worker_num' => Env::Config("worker-num", 4),
+            'task_worker_num' => Env::Config("db-pool", 10),
         ]);
     }
 
