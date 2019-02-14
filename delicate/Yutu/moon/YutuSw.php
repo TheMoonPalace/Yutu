@@ -9,6 +9,8 @@
 namespace Yutu\moon;
 
 
+use Yutu\database\Connection;
+use Yutu\helper\DB;
 use Yutu\helper\Logger;
 use Yutu\helper\TaskForce;
 use Yutu\net\http;
@@ -45,12 +47,14 @@ class YutuSw
         http\Server::I()->Create();
         http\Server::I()->Register();
 
+        // 环境检查
+        $this->testRequirement();
         // master进程命名
         swoole_set_process_name("YT-Master");
-        // 新增进程 用于执行计划任务，系统Task进程用于做数据库连接池
-        $process = TaskForce::I()->Init();
+        // 用于执行计划任务
+        $taskProcess = TaskForce::I()->Init();
 
-        http\Server::I()->http->addProcess($process);
+        http\Server::I()->http->addProcess($taskProcess);
         http\Server::I()->http->start();
     }
 
@@ -90,6 +94,12 @@ class YutuSw
         }
 
         exec("kill -" . SIGTERM . " {$masterId}");
+    }
+
+    // 检查服务必须的依赖项是否正常
+    private function testRequirement()
+    {
+
     }
 
 }

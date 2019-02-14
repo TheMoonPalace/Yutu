@@ -11,7 +11,7 @@ namespace Yutu\interfaces;
 
 interface ITask
 {
-// 闹钟模式定时任务
+    // 闹钟模式定时任务
     const TimeTask   = 1;
 
     // 秒表模式定时任务

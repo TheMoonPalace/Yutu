@@ -9,8 +9,8 @@
 namespace Yutu\moon;
 
 
+use Yutu\database\Pool;
 use Yutu\helper\Logger;
-use Yutu\helper\TaskForce;
 use Yutu\interfaces\IServerEvent;
 use Yutu\net\http\Controller;
 
@@ -23,7 +23,7 @@ class Event implements IServerEvent
     public static function ManagerStart(\Swoole\Server $server)
     {
         // 修改管理进程名
-        swoole_set_process_name("YT-Manager");
+        swoole_set_process_name("YT-Manage");
     }
 
     // stop
@@ -41,11 +41,14 @@ class Event implements IServerEvent
     {
         Logger::$processId = $server->worker_pid;
 
+        // Task进程
         if ($workerId >= $server->setting['worker_num']) {
-            swoole_set_process_name("YT-TaskDB"); // task进程
+            swoole_set_process_name("YT-DBPool"); Pool::I($server, false);
+        // worker进程
         } else {
-            swoole_set_process_name("YT-Worker"); // worker进程
+            swoole_set_process_name("YT-Worker"); Pool::I($server, true);
         }
+
     }
 
     /**
@@ -98,27 +101,6 @@ class Event implements IServerEvent
 
     /**
      * @param \Swoole\Server $server
-     * @param \Swoole\Server\Task $task
-     * @return mixed|void
-     */
-    public static function Task(\Swoole\Server $server, \Swoole\Server\Task $task)
-    {
-        // TODO
-    }
-
-    /**
-     * @param \Swoole\Server $server
-     * @param $task_id
-     * @param $data
-     * @return mixed|void
-     */
-    public static function Finish(\Swoole\Server $server, $task_id, $data)
-    {
-        // TODO
-    }
-
-    /**
-     * @param \Swoole\Server $server
      * @return mixed|void
      */
     public static function Start(\Swoole\Server $server)
@@ -150,5 +132,28 @@ EOT;
 
         // $server->master_pid;
         // $server->manager_pid
+    }
+
+    /**
+     * @param \Swoole\Server $server
+     * @param $task_id
+     * @param $src_worker_id
+     * @param $data
+     * @return mixed|void
+     */
+    public static function Task(\Swoole\Server $server, $task_id, $src_worker_id,  $data)
+    {
+        Pool::I()->Work($data['method'], $data['data']);
+    }
+
+    /**
+     * @param \Swoole\Server $server
+     * @param $task_id
+     * @param $data
+     * @return mixed
+     */
+    public static function Finish(\Swoole\Server $server, $task_id, $data)
+    {
+        return $data;
     }
 }

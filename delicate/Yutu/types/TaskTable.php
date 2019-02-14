@@ -6,7 +6,7 @@
  * Time: 11:28
  */
 
-namespace Yutu\helper;
+namespace Yutu\types;
 
 
 class TaskTable
@@ -37,7 +37,7 @@ class TaskTable
 
     /**
      * 当前是否在时间窗口期中
-     * @var
+     * @var boolean
      */
     public $inWindow;
 

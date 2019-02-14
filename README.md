@@ -2,21 +2,18 @@
 
 Yutu
 ====
-*基于Swoole简单易上手的轻量级Api-PHP-HTTP服务器框架*
+*基于Swoole简单易上手的轻量级PHP-Api服务框架*
 ![](./moon/yutu.png)
 
-### Installation
+### 安装
 - Linux, OS X, Windows Subsystem for Linux
 - Swoole4.2.12+
 - PHP7.1+
 ```git
 $ git cloen https://github.com/TheMoonPalace/Yutu.git
 ```
-```sybase
-$ curl 'https://github.com/TheMoonPalace/Yutu/archive/...'
-```
 
-### Quick start
+### 运行
 ```sybase
 $ ./yutu init
 ```
@@ -42,7 +39,7 @@ run app:
 $ ./yutu start [app name]
 ```
 
-### Config
+### 配置
 下载完后可以进行项目初始化 run ./yutu init, 框架会自动生成配置文件：your app/config.yml
 ```yaml
 # server port
@@ -54,6 +51,3 @@ $ ./yutu start [app name]
 # worker process number
 #work-num:2
 ```
-
-### TODO
-- [ ] ......

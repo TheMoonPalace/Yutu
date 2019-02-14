@@ -27,20 +27,37 @@ class Env
 
     // 默认的配置文件内容
     private const YUTU_CONFIG_DEFAULT = <<<EOT
+# ================== server config ==================    
 # server config https://yutu.aowu.io  
 # swoole config https://wiki.swoole.com/wiki/
   
 # listen port
 #port: 8080
-port: 8080
-    
-# work process number
-#work-num: 4
-work-num: 2 
+
+# worker process number
+#worker-num: 4
 
 # daemonize mode
 #daemonize: true
-daemonize: false
+
+# ================= database config =================
+# db-type default value: mysql
+# db-pool default value: 10
+
+# database port
+#db-port: 3306
+
+# database host address
+#db-host: "127.0.0.1"
+
+# database name
+#db-name: "mydb"
+
+# database user name
+#db-user: "user"
+
+# database password
+#db-pswd: "password"
 EOT;
 
     /**
