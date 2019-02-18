@@ -14,12 +14,12 @@ use Yutu\database\Pool;
 class DB
 {
     /**
-     *
+     * @param $sql
+     * @return string
      */
-    public static function Query()
+    public static function Select($sql)
     {
-        return Pool::I()->Call(__FUNCTION__, "select * from user");
+        return Pool::I()->Call("Query", $sql);
     }
-
 
 }
