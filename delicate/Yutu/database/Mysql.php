@@ -21,9 +21,9 @@ class Mysql implements IDatabase
 
     /**
      * Mysql constructor.
-     * @param $pdo
+     * @param \PDO $pdo
      */
-    public function __construct($pdo)
+    public function __construct(\PDO $pdo)
     {
         $this->link = $pdo;
     }
