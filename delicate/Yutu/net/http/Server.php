@@ -55,6 +55,7 @@ class Server
         $this->http = new \Swoole\http\Server("0.0.0.0", Env::Config("port", 8080));
 
         // 设置swoole的相关配置
+        // task进程用于数据库操作...
         $this->http->set([
             'pid_file'  => PATH_CACHE . '/' . Env::YUTU_PID_FILE,
             'log_file'  => PATH_LOGS . '/' . Env::YUTU_LOG_FILE,

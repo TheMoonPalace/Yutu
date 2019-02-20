@@ -10,17 +10,15 @@ namespace Yutu\database;
 
 
 use Yutu\helper\Logger;
+use Yutu\interfaces\IDatabase;
 use Yutu\moon\Env;
 use Yutu\database;
 use Yutu\types\YutuDBException;
 
 class Pool
 {
-    // 最大连接数
-    private $dao;
     // 数据库类型
     private $type;
-
     // 端口
     private $port;
     // 地址
@@ -31,6 +29,11 @@ class Pool
     private $user;
     // 用户密码
     private $pswd;
+
+    /**
+     * @var IDatabase
+     */
+    private $dao;
 
     /**
      * @var bool

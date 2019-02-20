@@ -122,7 +122,7 @@ class Event implements IServerEvent
                                                                                        
          <Yutu HTTP Server v{$v}>       
                                                          
- Port: {$port}    Work-Num: {$workerNumber}    Task-Num: {$taskNumber}
+ Port: {$port}       Work: {$workerNumber}       DBPool: {$taskNumber}
 
 EOT;
             return ;

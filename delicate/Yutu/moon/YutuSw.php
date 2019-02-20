@@ -9,8 +9,6 @@
 namespace Yutu\moon;
 
 
-use Yutu\database\Connection;
-use Yutu\helper\DB;
 use Yutu\helper\Logger;
 use Yutu\helper\TaskForce;
 use Yutu\net\http;

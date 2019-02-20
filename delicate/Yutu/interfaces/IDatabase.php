@@ -11,5 +11,33 @@ namespace Yutu\interfaces;
 
 interface IDatabase
 {
-    public function Query($sql = "");
+    /**
+     * @param $sql
+     * @param array $prepare
+     * @param bool $fetch
+     * @return mixed
+     */
+    public function Query($sql, $prepare = [], $fetch = false);
+
+    /**
+     * @param $sql
+     * @param array $prepare
+     * @return mixed
+     */
+    public function Execute($sql, $prepare = []);
+
+    /**
+     * @return mixed
+     */
+    public function Commit();
+
+    /**
+     * @return mixed
+     */
+    public function RollBack();
+
+    /**
+     * @return mixed
+     */
+    public function BeginTransaction();
 }
