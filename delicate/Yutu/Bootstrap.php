@@ -12,6 +12,10 @@ namespace Yutu;
 use Yutu\moon\Env;
 use Yutu\moon\YutuSw;
 
+/**
+ * Class Bootstrap
+ * @package Yutu
+ */
 class Bootstrap
 {
     /**

@@ -8,7 +8,10 @@
 
 namespace Yutu\interfaces;
 
-
+/**
+ * Interface IDatabase
+ * @package Yutu\interfaces
+ */
 interface IDatabase
 {
     /**

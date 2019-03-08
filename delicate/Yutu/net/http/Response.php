@@ -8,7 +8,10 @@
 
 namespace Yutu\net\http;
 
-
+/**
+ * Trait Response
+ * @package Yutu\net\http
+ */
 trait Response
 {
     /**

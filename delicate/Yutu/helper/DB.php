@@ -11,6 +11,10 @@ namespace Yutu\helper;
 
 use Yutu\database\Pool;
 
+/**
+ * Class DB
+ * @package Yutu\helper
+ */
 class DB
 {
     /**

@@ -12,6 +12,10 @@ namespace Yutu\database;
 use Yutu\interfaces\IDatabase;
 use Yutu\types\YutuDBException;
 
+/**
+ * Class Mysql
+ * @package Yutu\database
+ */
 class Mysql implements IDatabase
 {
     /**

@@ -14,6 +14,10 @@ use Yutu\helper\Logger;
 use Yutu\interfaces\IServerEvent;
 use Yutu\net\http\Controller;
 
+/**
+ * Class Event
+ * @package Yutu\moon
+ */
 class Event implements IServerEvent
 {
     /**

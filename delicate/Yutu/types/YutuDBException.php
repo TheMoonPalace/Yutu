@@ -8,7 +8,10 @@
 
 namespace Yutu\types;
 
-
+/**
+ * Class YutuDBException
+ * @package Yutu\types
+ */
 class YutuDBException extends \Exception
 {
 

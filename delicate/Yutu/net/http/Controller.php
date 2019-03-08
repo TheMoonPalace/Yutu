@@ -8,7 +8,10 @@
 
 namespace Yutu\net\http;
 
-
+/**
+ * Class Controller
+ * @package Yutu\net\http
+ */
 class Controller
 {
     use Request;

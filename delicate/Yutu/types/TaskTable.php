@@ -9,6 +9,10 @@
 namespace Yutu\types;
 
 
+/**
+ * Class TaskTable
+ * @package Yutu\types
+ */
 class TaskTable
 {
     /**

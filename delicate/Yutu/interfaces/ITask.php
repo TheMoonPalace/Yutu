@@ -8,7 +8,10 @@
 
 namespace Yutu\interfaces;
 
-
+/**
+ * Interface ITask
+ * @package Yutu\interfaces
+ */
 interface ITask
 {
     // 闹钟模式定时任务

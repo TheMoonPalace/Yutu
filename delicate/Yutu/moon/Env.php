@@ -11,6 +11,10 @@ namespace Yutu\moon;
 use Spyc\Spyc;
 use Yutu\helper\Logger;
 
+/**
+ * Class Env
+ * @package Yutu\moon
+ */
 class Env
 {
     const YUTU_VERSION        = 0.02;               // 版本号

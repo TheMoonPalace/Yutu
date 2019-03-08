@@ -13,6 +13,10 @@ use Yutu\helper\Logger;
 use Yutu\helper\TaskForce;
 use Yutu\net\http;
 
+/**
+ * Class YutuSw
+ * @package Yutu\moon
+ */
 class YutuSw
 {
     /**

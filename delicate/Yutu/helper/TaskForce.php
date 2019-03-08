@@ -12,6 +12,10 @@ namespace Yutu\helper;
 use Yutu\interfaces\ITask;
 use Yutu\types\TaskTable;
 
+/**
+ * Class TaskForce
+ * @package Yutu\helper
+ */
 class TaskForce
 {
     /**
@@ -61,7 +65,7 @@ class TaskForce
             swoole_set_process_name("YT-TaskFc");
 
             // 装入作业
-            $this->loadTask(APP_PATH, "app");
+            $this->loadTask(APP_PATH, APP_NAME);
             $this->loadTask(YUTU_PATH, "Yutu");
 
             // 将管道加入到事件循环中，变为异步模式

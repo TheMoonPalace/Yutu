@@ -11,17 +11,16 @@ namespace Yutu\net\http;
 
 use Yutu\moon\Env;
 
+/**
+ * Class Server
+ * @package Yutu\net\http
+ */
 class Server
 {
     /**
      * @var \Swoole\Http\Server
      */
     public $http;
-
-    /**
-     * @var bool
-     */
-    private $flag = false;
 
     /**
      * @var Server

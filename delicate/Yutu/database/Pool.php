@@ -12,9 +12,12 @@ namespace Yutu\database;
 use Yutu\helper\Logger;
 use Yutu\interfaces\IDatabase;
 use Yutu\moon\Env;
-use Yutu\database;
 use Yutu\types\YutuDBException;
 
+/**
+ * Class Pool
+ * @package Yutu\database
+ */
 class Pool
 {
     // 数据库类型

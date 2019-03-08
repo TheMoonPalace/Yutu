@@ -8,7 +8,10 @@
 
 namespace Yutu\net\http;
 
-
+/**
+ * Trait Request
+ * @package Yutu\net\http
+ */
 trait Request
 {
     /**
@@ -16,21 +19,37 @@ trait Request
      */
     public $request;
 
-    // TODO getStatus
-    public function GetStatus()
+    /**
+     * @param string $key
+     * @return array|null'
+     */
+    public function GetHeader($key = "")
     {
+        if (empty($key)) {
+            return $this->request->header;
+        }
 
+        if (isset($this->request->header[$key])) {
+            return $this->request->header[$key];
+        }
+
+        return null;
     }
 
-    // TODO getHeader
-    public function GetHeader()
+    /**
+     * @param string $key
+     * @return array|null
+     */
+    public function GetCookie($key = "")
     {
+        if (empty($key)) {
+            return $this->request->cookie;
+        }
 
-    }
+        if (isset($this->request->cookie[$key])) {
+            return $this->request->cookie[$key];
+        }
 
-    // TODO getCookie
-    public function GetCookie()
-    {
-
+        return null;
     }
 }
