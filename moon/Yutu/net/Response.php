@@ -2,20 +2,17 @@
 /**
  * Response.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:29
+ * Date: 2019/5/12 0012
+ * Time: 10:58
  */
 
-namespace Yutu\net\http;
+namespace Yutu\net;
 
-/**
- * Trait Response
- * @package Yutu\net\http
- */
+
 trait Response
 {
     /**
-     * @var \swoole_http_response
+     * @var \Swoole\Http\Response
      */
     public $response;
 
@@ -105,6 +102,6 @@ trait Response
     private function format($code, $data, $message = '')
     {
         $this->setHeader("Content-Type", "application/json");
-        return json_encode(['status' => $code, 'message' => $message, 'data' => $data]);
+        return json_encode(['code' => $code, 'info' => $message, 'data' => $data]);
     }
 }

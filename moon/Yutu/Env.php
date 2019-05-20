@@ -2,23 +2,19 @@
 /**
  * Env.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:13
+ * Date: 2019/5/11 0011
+ * Time: 10:44
  */
 
-namespace Yutu\moon;
+namespace Yutu;
 
-use Spyc\Spyc;
+
 use Yutu\helper\Logger;
 
-/**
- * Class Env
- * @package Yutu\moon
- */
 class Env
 {
-    const YUTU_VERSION        = 0.02;               // 版本号
-    const YUTU_PID_FILE       = "ytserver.pid";     // pid 文件名
+    const YUTU_VERSION        = 0.1;                // 版本号
+    const YUTU_PID_FILE       = "ytsw.pid";         // pid 文件名
     const YUTU_LOG_FILE       = "info.log";         // 日志文件名
     const YUTU_CONF_FILE      = "config.yml";       // 配置文件名
 
@@ -29,51 +25,9 @@ class Env
     const YUTU_SYS_RELOAD     = "reload";           // args reload
     const YUTU_SYS_RESTART    = "restart";          // args restart
 
-    // 默认的配置文件内容
-    private const YUTU_CONFIG_DEFAULT = <<<EOT
-# ================== server config ==================    
-# server config https://yutu.aowu.io  
-# swoole config https://wiki.swoole.com/wiki/
-  
-# listen port
-#port: 8080
-
-# worker process number
-#worker-num: 4
-
-# daemonize mode
-#daemonize: true
-
-# ================= database config =================
-# db-type default value: mysql
-# db-pool default value: 10
-
-# database port
-#db-port: 3306
-
-# database host address
-#db-host: "127.0.0.1"
-
-# database name
-#db-name: "mydb"
-
-# database user name
-#db-user: "user"
-
-# database password
-#db-pswd: "password"
-EOT;
-
-    /**
-     * 加载的配置文件配置
-     * @var array
-     */
+    // 加载的配置文件配置
     private static $config = [];
-
-    /**
-     * flag
-     * @var bool
-     */
+    // flag
     private static $isLoad = false;
 
     /**
@@ -81,14 +35,14 @@ EOT;
      * @param null $default
      * @return array|mixed|null
      */
-    public static function Config($key = "", $default = null)
+    public static function Config(string $key = "", $default = null)
     {
         if (!self::$isLoad)
         {
             $file = APP_PATH . "/" . self::YUTU_CONF_FILE;
             if (!file_exists($file)) return null;
 
-            self::$config = Spyc::YAMLLoad($file);
+            self::$config = \Vendor\Spyc\Spyc::YAMLLoad($file);
             self::$isLoad = true;
         }
 
@@ -104,7 +58,6 @@ EOT;
 
         return $default;
     }
-
     /**
      * 获取server pid
      * @return bool|false|string
@@ -126,7 +79,9 @@ EOT;
         return null;
     }
 
-    // 初始化运行环境
+    /**
+     * 初始化运行环境
+     */
     public static function RegisterYutuRuntimeEnvironment()
     {
         date_default_timezone_set("Asia/Shanghai");
@@ -151,20 +106,22 @@ EOT;
         !is_dir(PATH_CACHE) && mkdir(PATH_CACHE);
         !is_dir(PATH_BACKUP) && mkdir(PATH_BACKUP);
 
-        !is_file(PATH_CONFIG_FILE) && file_put_contents(PATH_CONFIG_FILE, self::YUTU_CONFIG_DEFAULT);
+        !is_file(PATH_CONFIG_FILE) && file_put_contents(PATH_CONFIG_FILE, self::defaultConfigValue());
     }
 
-    // 注册错误捕捉
+    /**
+     * 注册错误捕捉事件
+     */
     public static function RegisterYutuRuntimeExceptionHandler()
     {
         error_reporting(0);
 
-        // swoole下不生效
+        // 服务器启动后不生效
         set_error_handler(function ($errNo, $errStr, $errFile, $errLine) {
             Logger::Exception(['message' => $errStr, 'file' => $errFile, 'line' => $errLine]);
         });
 
-        // swoole下不生效
+        // 服务器启动后不生效
         set_exception_handler(function ($e) {
             Logger::Exception($e);
         });
@@ -177,5 +134,52 @@ EOT;
                 Logger::Exception($e);
             }
         });
+    }
+
+    /**
+     * 默认配置文件
+     * @return string
+     */
+    private static function defaultConfigValue()
+    {
+        return <<<EOT
+# ================== server config ==================
+# server config https://yutu.aowu.io
+# swoole config https://wiki.swoole.com/wiki/
+
+# listen port
+port: 8080
+
+# worker process number
+worker-num: 4
+
+# daemonize mode
+daemonize: false
+
+# ================= database config =================
+# database type
+#db-type: "mysql"
+
+# database pool number
+#db-pool: 10
+
+# table prefix
+#db-pre: ""
+
+# database port
+#db-port: 3306
+
+# database host address
+#db-host: "localhost"
+
+# database name
+#db-name: ""
+
+# database user name
+#db-user: ""
+
+# database password
+#db-password: ""
+EOT;
     }
 }

@@ -2,16 +2,13 @@
 /**
  * Controller.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:28
+ * Date: 2019/5/12 0012
+ * Time: 10:58
  */
 
-namespace Yutu\net\http;
+namespace Yutu\net;
 
-/**
- * Class Controller
- * @package Yutu\net\http
- */
+
 class Controller
 {
     use Request;

@@ -22,13 +22,14 @@ example:
 <?php
 namespace app\controller;
 
-use Yutu\net\http;
 
-class api extends http\controller
+class api
 {
     public function get()
     {
-        // OR $this->WriteAll("Welcome To The Moon Palace");
+        // OR
+        // extends Yutu\net\Controller
+        // $this->WriteAll("Welcome To The Moon Palace");
         return "Welcome To The Moon Palace";
     }
 
@@ -40,7 +41,7 @@ $ ./yutu start [app name]
 ```
 
 ### Config
-configuration files：your app/config.yml
+Initialization configuration file：run ./yutu init
 ```yaml
 # server port
 #port: 8080

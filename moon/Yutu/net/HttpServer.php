@@ -2,51 +2,48 @@
 /**
  * Server.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:29
+ * Date: 2019/5/12 0012
+ * Time: 10:38
  */
 
-namespace Yutu\net\http;
+namespace Yutu\net;
 
 
-use Yutu\moon\Env;
+use Yutu\Env;
 
-/**
- * Class Server
- * @package Yutu\net\http
- */
-class Server
+class HttpServer
 {
     /**
-     * @var \Swoole\Http\Server
+     * @var \Swoole\Server
      */
     public $http;
 
     /**
-     * @var Server
+     * @var HttpServer
      */
-    private static $server;
+    private static $instance;
 
     /**
      * Server constructor.
      */
     private function __construct()
     {
+
     }
 
     /**
-     * @return Server
+     * @return HttpServer
      */
     public static function I()
     {
-        if (empty(self::$server)) {
-            self::$server = new static();
+        if (empty(self::$instance)) {
+            self::$instance = new self();
         }
 
-        return self::$server;
+        return self::$instance;
     }
 
-    // create http server
+    // 创建HTTP服务器
     public function Create()
     {
         // 端口从配置获取，默认8080
@@ -61,22 +58,21 @@ class Server
             'log_level' => SWOOLE_LOG_INFO, // swoole 日志等级 https://wiki.swoole.com/wiki/page/538.html
             'daemonize'  => Env::Config("daemonize", false),
             'worker_num' => Env::Config("worker-num", 4),
-            'task_worker_num' => Env::Config("db-pool", 10),
+            'task_worker_num' => 1,
         ]);
     }
 
-    // register * event
+    // 注册Swoole Server事件
     public function Register()
     {
-        $this->http->on("ManagerStart", "Yutu\moon\Event::ManagerStart");
-        $this->http->on("ManagerStop", "Yutu\moon\Event::ManagerStop");
-        $this->http->on("WorkerStart", "Yutu\moon\Event::WorkerStart");
-        $this->http->on("WorkerError", "Yutu\moon\Event::WorkerError");
+        $this->http->on("ManagerStart", "Yutu\Event::ManagerStart");
+        $this->http->on("ManagerStop", "Yutu\Event::ManagerStop");
+        $this->http->on("WorkerStart", "Yutu\Event::WorkerStart");
+        $this->http->on("WorkerError", "Yutu\Event::WorkerError");
 
-        $this->http->on("Task", "Yutu\moon\Event::Task");
-        $this->http->on("Finish", "Yutu\moon\Event::Finish");
-        $this->http->on("Start", "Yutu\moon\Event::Start");
-        $this->http->on("Request", "Yutu\moon\Event::NewRequest");
+        $this->http->on("Task", "Yutu\Event::Task");
+        $this->http->on("Start", "Yutu\Event::Start");
+        $this->http->on("Finish", "Yutu\Event::Finish");
+        $this->http->on("Request", "Yutu\Event::NewRequest");
     }
-
 }

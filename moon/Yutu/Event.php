@@ -2,22 +2,20 @@
 /**
  * Event.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:13
+ * Date: 2019/5/11 0011
+ * Time: 10:56
  */
 
-namespace Yutu\moon;
+namespace Yutu;
 
 
 use Yutu\database\Pool;
 use Yutu\helper\Logger;
 use Yutu\interfaces\IServerEvent;
-use Yutu\net\http\Controller;
+use Yutu\net\Controller;
+use Yutu\net\Request;
+use Yutu\net\Response;
 
-/**
- * Class Event
- * @package Yutu\moon
- */
 class Event implements IServerEvent
 {
     /**
@@ -27,13 +25,16 @@ class Event implements IServerEvent
     public static function ManagerStart(\Swoole\Server $server)
     {
         // 修改管理进程名
-        swoole_set_process_name("YT-Manage");
+        swoole_set_process_name("YT-Manager");
     }
 
-    // stop
+    /**
+     * stop
+     * @return mixed|void
+     */
     public static function ManagerStop()
     {
-
+        // TODO: Implement ManagerStop() method.
     }
 
     /**
@@ -43,16 +44,16 @@ class Event implements IServerEvent
      */
     public static function WorkerStart(\Swoole\Server $server, $workerId)
     {
-        Logger::$processId = $server->worker_pid;
+        Logger::$ProcessID =  $server->worker_pid;
 
         // Task进程
         if ($workerId >= $server->setting['worker_num']) {
-            swoole_set_process_name("YT-DBPool"); Pool::I($server, false);
+            swoole_set_process_name("YT-TaskET");
         // worker进程
         } else {
-            swoole_set_process_name("YT-Worker"); Pool::I($server, true);
+            Pool::I();
+            swoole_set_process_name("YT-Worker");
         }
-
     }
 
     /**
@@ -71,36 +72,52 @@ class Event implements IServerEvent
      */
     public static function NewRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-        $uri = $request->server['request_uri'];
-        $ctr = new Controller($request, $response);
-        $handles = explode("/", $uri);
+        $ctrl = new Controller($request, $response);
+        $uri  = explode("/", $request->server['request_uri']);
 
-        if (empty($handles[1])) {
-            $ctr->WriteAll(null, "404 Not Found", 404); return ;
+        if (!isset($uri[1]) || empty($uri[1])) {
+            $ctrl->WriteAll(null, "404 Not Found", "404");
         }
-
-        $handle = "app\\controller\\" . $handles[1];
-        $handleFunc = isset($handles[2]) ? $handles[2] : "index";
 
         try {
-            $hd = new $handle($request, $response);
+            $class  = APP_NAME . "\\controller\\{$uri[1]}";
+            $func   = isset($uri[2]) ? $uri[2] : "index";
+            $handle = new $class($request, $response);
 
-            if (!method_exists($hd, $handleFunc)) {
-                $ctr->WriteAll(null, "Method Not Found: $handleFunc", 404); return ;
+            if (!method_exists($handle, $func)) {
+                $ctrl->WriteAll(null, "Method Not Found: $func", 404); return ;
             }
 
-            $res = $hd->{$handleFunc}();
-            !method_exists($hd, "writeAll") ? $ctr->WriteAll($res) : !$hd->isReturn && $hd->WriteAll($res);
+            // 控制器可直接return 或者 直接WriteAll
+            $response = $handle->{$func}();
+
+            // 防止控制器未继承Controller类
+            if (!method_exists($handle, "WriteAll")) {
+                $ctrl->WriteAll($response); return ;
+            }
+
+            // 如果已经WriteAll则无法再次WriteAll
+            !$handle->isReturn && $handle->WriteAll($response);
         } catch (\ParseError $e) {
             Logger::Exception($e);
-            $ctr->WriteAll(null, "Internal Server Error", 500);
+            $ctrl->WriteAll(null, "Internal Server Error", 500);
         } catch (\Exception $e) {
             Logger::Exception($e);
-            $ctr->WriteAll(null, "Internal Server Error", 500);
+            $ctrl->WriteAll(null, "Internal Server Error", 500);
         } catch (\Error $e) {
             Logger::Exception($e);
-            $ctr->WriteAll(null, "Internal Server Error", 500);
+            $ctrl->WriteAll(null, "Internal Server Error", 500);
         }
+    }
+
+    public static function Task(\Swoole\Server $server, $task_id, $src_worker_id, $data)
+    {
+        // TODO: Implement Task() method.
+    }
+
+    public static function Finish(\Swoole\Server $server, $task_id, $data)
+    {
+        // TODO: Implement Finish() method.
     }
 
     /**
@@ -113,8 +130,6 @@ class Event implements IServerEvent
         {
             $v = Env::YUTU_VERSION;
             $port = Env::Config("port");
-            $taskNumber = $server->setting['task_worker_num'];
-            $workerNumber = $server->setting['worker_num'];
 
             echo <<<EOT
                                            
@@ -125,8 +140,7 @@ class Event implements IServerEvent
     `--'     `-----'     `--'     `-----'  
                                                                                        
          <Yutu HTTP Server v{$v}>       
-                                                         
- Port: {$port}       Work: {$workerNumber}       DBPool: {$taskNumber}
+               port: {$port}       
 
 EOT;
             return ;
@@ -136,28 +150,5 @@ EOT;
 
         // $server->master_pid;
         // $server->manager_pid
-    }
-
-    /**
-     * @param \Swoole\Server $server
-     * @param $task_id
-     * @param $src_worker_id
-     * @param $data
-     * @return mixed|void
-     */
-    public static function Task(\Swoole\Server $server, $task_id, $src_worker_id,  $data)
-    {
-        Pool::I()->Work($data['method'], $data['data']);
-    }
-
-    /**
-     * @param \Swoole\Server $server
-     * @param $task_id
-     * @param $data
-     * @return mixed
-     */
-    public static function Finish(\Swoole\Server $server, $task_id, $data)
-    {
-        return $data;
     }
 }

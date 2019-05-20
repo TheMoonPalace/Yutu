@@ -1,34 +1,30 @@
 <?php
 /**
- * Server.php.
+ * YutuSw.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:12
+ * Date: 2019/5/11 0011
+ * Time: 10:56
  */
 
-namespace Yutu\moon;
+namespace Yutu;
 
 
+use Yutu\net\HttpServer;
 use Yutu\helper\Logger;
-use Yutu\helper\TaskForce;
-use Yutu\net\http;
 
-/**
- * Class YutuSw
- * @package Yutu\moon
- */
 class YutuSw
 {
     /**
      * @var YutuSw
      */
-    private static $instance = null;
+    private static $instance;
 
     /**
      * YutuSw constructor.
      */
     private function __construct()
     {
+
     }
 
     /**
@@ -37,53 +33,10 @@ class YutuSw
     public static function I()
     {
         if (empty(self::$instance)) {
-            self::$instance = new static();
+            self::$instance = new self();
         }
 
         return self::$instance;
-    }
-
-    // 创建服务
-    public function CreateHTTPServer()
-    {
-        http\Server::I()->Create();
-        http\Server::I()->Register();
-
-        // 环境检查
-        $this->testRequirement();
-        // master进程命名
-        swoole_set_process_name("YT-Master");
-        // 用于执行计划任务
-        $taskProcess = TaskForce::I()->Init();
-
-        http\Server::I()->http->addProcess($taskProcess);
-        http\Server::I()->http->start();
-    }
-
-    // 重新加载当前app服务、重启所有worker进程
-    public function ReloadHTTPServer()
-    {
-        $masterId = Env::ServerPid();
-
-        if (empty($masterId)) {
-            logger::ExtremelySerious("Reload: " . APP_NAME . " Not Exists");
-        }
-
-        exec("kill -" . SIGUSR1 . " {$masterId}"); return ;
-    }
-
-    // 重启
-    public function RestartHTTPServer()
-    {
-        global $argv;
-        $masterId = Env::ServerPid();
-
-        if (empty($masterId)) {
-            logger::ExtremelySerious("Restart: " . APP_NAME . " Not Exists");
-        }
-
-        exec("kill -" . SIGTERM . " " . $masterId);
-        exec(str_replace(" ", "\ ", DI) . "/" . basename($argv[0]) . " ". Env::YUTU_SYS_START ." " . basename(APP_PATH));
     }
 
     // 停止当前app服务
@@ -98,10 +51,42 @@ class YutuSw
         exec("kill -" . SIGTERM . " {$masterId}");
     }
 
-    // 检查服务必须的依赖项是否正常
-    private function testRequirement()
+    // 创建服务
+    public function CreateHTTPServer()
     {
+        HttpServer::I()->Create();
+        HttpServer::I()->Register();
 
+        // master进程命名
+        swoole_set_process_name("YT-Master");
+
+        HttpServer::I()->http->start();
+    }
+
+    // 重新加载当前app服务、重启所有worker进程
+    public function ReloadHTTPServer()
+    {
+        $masterId = Env::ServerPid();
+
+        if (empty($masterId)) {
+            logger::ExtremelySerious("Reload: " . APP_NAME . " Not Exists");
+        }
+
+        exec("kill -" . SIGUSR1 . " {$masterId}"); return ;
+    }
+
+    // 重启服务
+    public function RestartHTTPServer()
+    {
+        global $argv;
+        $masterId = Env::ServerPid();
+
+        if (empty($masterId)) {
+            logger::ExtremelySerious("Restart: " . APP_NAME . " Not Exists");
+        }
+
+        exec("kill -" . SIGTERM . " " . $masterId);
+        exec(str_replace(" ", "\ ", DI) . "/" . basename($argv[0]) . " ". Env::YUTU_SYS_START ." " . basename(APP_PATH));
     }
 
 }
