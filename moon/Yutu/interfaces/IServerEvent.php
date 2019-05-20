@@ -2,16 +2,13 @@
 /**
  * IServerEvent.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 14:40
+ * Date: 2019/5/12 0012
+ * Time: 10:48
  */
 
 namespace Yutu\interfaces;
 
-/**
- * Interface IServerEvent
- * @package Yutu\interfaces
- */
+
 interface IServerEvent
 {
     /**

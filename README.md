@@ -22,13 +22,14 @@ example:
 <?php
 namespace app\controller;
 
-use Yutu\net\http;
 
-class api extends http\controller
+class api 
 {
     public function get()
     {
-        // OR $this->WriteAll("Welcome To The Moon Palace");
+        // OR
+        // extends Yutu\net\Controller
+        // $this->WriteAll("Welcome To The Moon Palace");
         return "Welcome To The Moon Palace";
     }
 

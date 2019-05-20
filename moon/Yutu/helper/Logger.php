@@ -2,15 +2,12 @@
 /**
  * Logger.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:26
+ * Date: 2019/5/11 0011
+ * Time: 13:29
  */
 
 namespace Yutu\helper;
 
-
-use Yutu\moon\YutuSw;
-use Yutu\net\http\Server;
 
 class Logger
 {
@@ -18,7 +15,7 @@ class Logger
      * 当前进程ID
      * @var int
      */
-    public static $processId = -1;
+    public static $ProcessID = -1;
 
     /**
      * @param string $message
@@ -34,7 +31,7 @@ class Logger
     public static function Exception($e = null)
     {
         if (is_null($e)) {
-            return ;
+            return;
         }
 
         if (is_object($e)) {
@@ -53,7 +50,7 @@ class Logger
      */
     public static function Write($type, $message = '')
     {
-        $msg = "[" . date("Y-m-d H:i:s") . " $" . self::$processId . " $type] " . $message . "\n";
+        $msg = "[" . date("Y-m-d H:i:s") . " $" . self::$ProcessID . " $type] " . $message . "\n";
         echo $msg;
     }
 
@@ -65,5 +62,4 @@ class Logger
     {
         self::Exception($e); exit;
     }
-
 }

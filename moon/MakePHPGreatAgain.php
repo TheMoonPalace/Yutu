@@ -1,24 +1,21 @@
 <?php
 /**
- * Bootstrap.php.
+ * MakePHPGreatAgain.php.
  * User: Hodge.Yuan@hotmail.com
- * Date: 2019/1/31 0031
- * Time: 11:07
+ * Date: 2019/5/10 0010
+ * Time: 16:25
  */
 
-namespace Yutu;
+use Yutu\Env;
+use Yutu\YutuSw;
 
-
-use Yutu\moon\Env;
-use Yutu\moon\YutuSw;
-
-class Bootstrap
+class MakePHPGreatAgain
 {
     /**
-     * Bootstrap constructor.
-     * @param string $path
+     * MakePHPGreatAgain constructor.
+     * @param string $root
      */
-    public function __construct(string $path)
+    public function __construct(string $root)
     {
         global $argv;
         global $argc;
@@ -26,12 +23,11 @@ class Bootstrap
         if ($argc < 2) $this->help();
         $appName = isset($argv[2]) && !empty($argv[2]) ? $argv[2] : "app";
 
-        defined("DI") or define("DI", $path);
+        defined("DI") or define("DI", $root);
         defined("APP_NAME") or define("APP_NAME", $appName);
         defined("APP_PATH") or define("APP_PATH", DI . "/" . $appName);
-        defined("YUTU_PATH") or define("YUTU_PATH", $path . "/" . vendor . "/Yutu");
 
-        $this->autoload($path);
+        $this->autoload(__DIR__);
         Env::RegisterYutuRuntimeEnvironment();
         Env::RegisterYutuRuntimeExceptionHandler();
 
@@ -40,6 +36,9 @@ class Bootstrap
             // 初始化
             case Env::YUTU_SYS_INIT:
                 break;
+            // 停止服务
+            case Env::YUTU_SYS_STOP:
+                YutuSw::I()->StopHTTPServer(); break;
             // 启动服务
             case Env::YUTU_SYS_START:
                 YutuSw::I()->CreateHTTPServer(); break;
@@ -49,9 +48,6 @@ class Bootstrap
             // 热重启服务
             case Env::YUTU_SYS_RELOAD:
                 YutuSw::I()->ReloadHTTPServer(); break;
-            // 停止服务
-            case Env::YUTU_SYS_STOP:
-                YutuSw::I()->StopHTTPServer(); break;
             // help
             case Env::YUTU_SYS_HELP:
                 $this->help(); break;
@@ -94,21 +90,21 @@ EOT;
     }
 
     /**
-     * 自动加载 vendor 、 app目录
-     * @param $path
+     * 自动加载
+     * @param string $path
      */
-    private function autoload($path)
+    private function autoload(string $path)
     {
         // 自动加载
         spl_autoload_register(function ($class) use ($path) {
             $classPath = $path . '/' . str_replace('\\', '/' , $class) . ".php";
 
             if (!file_exists($classPath)) {
-                $classPath = $path . '/' . vendor . '/' . str_replace('\\', '/', $class) . ".php";
+                $classPath = DI . '/' . str_replace('\\', '/', $class) . ".php";
             }
 
             if (!file_exists($classPath)) {
-                throw new \Exception("File Not Found: $class");
+                throw new \Exception("File Not Found: $classPath");
             }
 
             file_exists($classPath) && require_once $classPath;

@@ -9,7 +9,7 @@
    * @license http://www.opensource.org/licenses/mit-license.php MIT License
    * @package Spyc
    */
-namespace Spyc;
+namespace Vendor\Spyc;
 
 if (!function_exists('spyc_load')) {
   /**
@@ -44,7 +44,6 @@ if (!function_exists('spyc_dump')) {
   }
 }
 
-if (!class_exists('Spyc\Spyc')) {
 
 /**
    * The Simple PHP YAML Class.
@@ -1147,7 +1146,7 @@ class Spyc {
     $line = trim(str_replace($group, '', $line));
     return $line;
   }
-}
+
 }
 
 // Enable use of Spyc from command line
