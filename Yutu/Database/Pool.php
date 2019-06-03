@@ -6,11 +6,11 @@
  * Time: 10:01
  */
 
-namespace Yutu\database;
+namespace Yutu\Database;
 
 
 use Yutu\Env;
-use Yutu\helper\Logger;
+use Yutu\Helper\Logger;
 
 class Pool
 {
@@ -19,8 +19,22 @@ class Pool
      */
     private $queue = null;
 
-    private $count = 0;
+    /**
+     * 最大的连接数
+     * @var int
+     */
+    private $max = 0;
 
+    /**
+     * 最小连接数
+     * @var int
+     */
+    private $min = 1;
+
+    /**
+     * 数据库类型
+     * @var string
+     */
     private $type = '';
 
     /**
@@ -43,11 +57,13 @@ class Pool
     {
         if (empty(self::$instance))
         {
+
             self::$instance = new self();
-            self::$instance->queue = new \Swoole\Coroutine\Channel(10);
+            self::$instance->max = Env::Config('db-pool', 4);
+            self::$instance->queue = new \Swoole\Coroutine\Channel( self::$instance->max);
             self::$instance->type  = Env::Config("db-type", "mysql");
 
-            for ($i = 0; $i < 10; $i++) {
+            for ($i = 0; $i < self::$instance->max; $i++) {
                 self::$instance->connect();
             }
         }
@@ -62,7 +78,7 @@ class Pool
      */
     public function Call($func, ...$params)
     {
-        $dao = "Yutu\database\\" . ucfirst($this->type);
+        $dao = "Yutu\Database\\" . ucfirst($this->type);
         $lin = $this->queue->pop();
         $res = null;
 

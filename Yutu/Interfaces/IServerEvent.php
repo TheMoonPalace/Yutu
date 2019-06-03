@@ -6,7 +6,7 @@
  * Time: 10:48
  */
 
-namespace Yutu\interfaces;
+namespace Yutu\Interfaces;
 
 
 interface IServerEvent

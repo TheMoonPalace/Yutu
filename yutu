@@ -1,5 +1,0 @@
-#!/usr/bin/env php
-<?php
-if (version_compare(PHP_VERSION, "7.1", "<")) exit("PHP version is too low, need 7.1+\n");
-if (version_compare(SWOOLE_VERSION, "4.2.12", "<")) exit("Swoole version is too low, need 4.2.12+\n");
-const delicate = "moon"; require_once __DIR__ . "/" . delicate . "/MakePHPGreatAgain.php"; new MakePHPGreatAgain(__DIR__);

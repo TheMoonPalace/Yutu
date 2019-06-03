@@ -6,7 +6,7 @@
  * Time: 10:38
  */
 
-namespace Yutu\net;
+namespace Yutu\Net;
 
 
 use Yutu\Env;
@@ -47,11 +47,9 @@ class HttpServer
     public function Create()
     {
         // 端口从配置获取，默认8080
-        // 当前允许启动多个相同服务，框架层面不限制
         $this->http = new \Swoole\http\Server("0.0.0.0", Env::Config("port", 8080));
 
         // 设置swoole的相关配置
-        // task进程用于数据库操作...
         $this->http->set([
             'pid_file'  => PATH_CACHE . '/' . Env::YUTU_PID_FILE,
             'log_file'  => PATH_LOGS . '/' . Env::YUTU_LOG_FILE,

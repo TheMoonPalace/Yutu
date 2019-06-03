@@ -14,18 +14,27 @@ class MakePHPGreatAgain
     /**
      * MakePHPGreatAgain constructor.
      * @param string $root
+     * @param array $args
      */
-    public function __construct(string $root)
+    public function __construct(string $root, array $args)
     {
         global $argv;
         global $argc;
 
-        if ($argc < 2) $this->help();
-        $appName = isset($argv[2]) && !empty($argv[2]) ? $argv[2] : "app";
+        if ($argc < 2) {
+            $this->help();
+        }
 
-        defined("DI") or define("DI", $root);
-        defined("APP_NAME") or define("APP_NAME", $appName);
-        defined("APP_PATH") or define("APP_PATH", DI . "/" . $appName);
+        if (version_compare(PHP_VERSION, "7.1", "<")) {
+            exit("PHP version is too low, need 7.1+\n");
+        }
+
+        if (version_compare(SWOOLE_VERSION, "4.2.12", "<")) {
+            exit("Swoole version is too low, need 4.2.12+\n");
+        }
+
+        define("DI", $root);
+        define("APP_NAME", isset($args['name']) ? $args['name'] : "App");
 
         $this->autoload(__DIR__);
         Env::RegisterYutuRuntimeEnvironment();
@@ -76,11 +85,11 @@ Usage:
     yutu command
     
 The commands are:
-    init    [app name]     *initialization app
-    start   [app name]     *start server
-    restart [app name]     *restart server
-    reload  [app name]     *reload server
-    stop    [app name]     *stop server   
+    init         *initialization app
+    start        *start server
+    restart      *restart server
+    reload       *reload server
+    stop         *stop server   
 
 
 EOT;
@@ -110,4 +119,5 @@ EOT;
             file_exists($classPath) && require_once $classPath;
         });
     }
+
 }

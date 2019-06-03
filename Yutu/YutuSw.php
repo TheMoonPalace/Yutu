@@ -9,8 +9,9 @@
 namespace Yutu;
 
 
-use Yutu\net\HttpServer;
-use Yutu\helper\Logger;
+use Yutu\Helper\Timer;
+use Yutu\Net\HttpServer;
+use Yutu\Helper\Logger;
 
 class YutuSw
 {
@@ -45,7 +46,7 @@ class YutuSw
         $masterId = Env::ServerPid();
 
         if (empty($masterId)) {
-            Logger::ExtremelySerious("Stop: " . APP_NAME . " Not Exists");
+            Logger::ExtremelySerious("Stop: Yutu Swoole Server Not Exists", false);
         }
 
         exec("kill -" . SIGTERM . " {$masterId}");
@@ -59,7 +60,10 @@ class YutuSw
 
         // master进程命名
         swoole_set_process_name("YT-Master");
+        // 新增进程 用于执行计划任务
+        $process = Timer::I()->Init();
 
+        HttpServer::I()->http->addProcess($process);
         HttpServer::I()->http->start();
     }
 
@@ -69,7 +73,7 @@ class YutuSw
         $masterId = Env::ServerPid();
 
         if (empty($masterId)) {
-            logger::ExtremelySerious("Reload: " . APP_NAME . " Not Exists");
+            logger::ExtremelySerious("Reload: Yutu Swoole Server Not Exists");
         }
 
         exec("kill -" . SIGUSR1 . " {$masterId}"); return ;
@@ -82,11 +86,11 @@ class YutuSw
         $masterId = Env::ServerPid();
 
         if (empty($masterId)) {
-            logger::ExtremelySerious("Restart: " . APP_NAME . " Not Exists");
+            logger::ExtremelySerious("Restart: Yutu Swoole Server Not Exists");
         }
 
         exec("kill -" . SIGTERM . " " . $masterId);
-        exec(str_replace(" ", "\ ", DI) . "/" . basename($argv[0]) . " ". Env::YUTU_SYS_START ." " . basename(APP_PATH));
+        exec(str_replace(" ", "\ ", DI) . "/" . basename($argv[0]) . " ". Env::YUTU_SYS_START);
     }
 
 }

@@ -9,7 +9,7 @@
 namespace Yutu;
 
 
-use Yutu\helper\Logger;
+use Yutu\Helper\Logger;
 
 class Env
 {
@@ -39,7 +39,7 @@ class Env
     {
         if (!self::$isLoad)
         {
-            $file = APP_PATH . "/" . self::YUTU_CONF_FILE;
+            $file = DI . "/" . self::YUTU_CONF_FILE;
             if (!file_exists($file)) return null;
 
             self::$config = \Vendor\Spyc\Spyc::YAMLLoad($file);
@@ -86,19 +86,19 @@ class Env
     {
         date_default_timezone_set("Asia/Shanghai");
 
-        defined("PATH_TASK") or define("PATH_TASK", APP_PATH . "/task");
-        defined("PATH_MODEL") or define("PATH_MODEL", APP_PATH . "/model");
-        defined("PATH_RUNTIME") or define("PATH_RUNTIME", APP_PATH . "/runtime");
-        defined("PATH_CONTROLLER") or define("PATH_CONTROLLER", APP_PATH . "/controller");
-        defined("PATH_CONFIG_FILE") or define("PATH_CONFIG_FILE", APP_PATH . "/" . self::YUTU_CONF_FILE);
+        defined("CTR_NAME") or define("CTR_NAME", "Controller");
+        defined("PATH_APP") or define("PATH_APP", DI . "/" . APP_NAME);
+        defined("PATH_CONTROLLER") or define("PATH_CONTROLLER", PATH_APP . "/" . CTR_NAME);
+
+        defined("PATH_CRONTAB") or define("PATH_CRONTAB", DI . "/Crontab");
+        defined("PATH_RUNTIME") or define("PATH_RUNTIME", DI . "/Runtime");
+        defined("PATH_CONFIG_FILE") or define("PATH_CONFIG_FILE", DI . "/" . self::YUTU_CONF_FILE);
 
         defined("PATH_LOGS") or define("PATH_LOGS", PATH_RUNTIME . "/logs");
         defined("PATH_CACHE") or define("PATH_CACHE", PATH_RUNTIME . "/cache");
         defined("PATH_BACKUP") or define("PATH_BACKUP", PATH_RUNTIME . "/backup");
 
-        !is_dir(APP_PATH) && mkdir(APP_PATH);
-        !is_dir(PATH_TASK) && mkdir(PATH_TASK);
-        !is_dir(PATH_MODEL) && mkdir(PATH_MODEL);
+        !is_dir(PATH_APP) && mkdir(PATH_APP);
         !is_dir(PATH_RUNTIME) && mkdir(PATH_RUNTIME);
         !is_dir(PATH_CONTROLLER) && mkdir(PATH_CONTROLLER);
 
