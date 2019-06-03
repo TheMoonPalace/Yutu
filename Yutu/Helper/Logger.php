@@ -6,8 +6,10 @@
  * Time: 13:29
  */
 
-namespace Yutu\helper;
+namespace Yutu\Helper;
 
+
+use Yutu\YutuSw;
 
 class Logger
 {
@@ -55,11 +57,12 @@ class Logger
     }
 
     /**
-     * 禁止在服务器启动后使用
+     * 禁止在服务器完全启动后使用
      * @param null $e
+     * @param bool $stop
      */
-    public static function ExtremelySerious($e = null)
+    public static function ExtremelySerious($e = null, $stop = true)
     {
-        self::Exception($e); exit;
+        self::Exception($e); $stop && YutuSw::I()->StopHTTPServer(); exit;
     }
 }

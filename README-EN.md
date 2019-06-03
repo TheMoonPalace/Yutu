@@ -3,24 +3,21 @@
 Yutu
 ====
 *The Based Swoole Lightweight PHP-Api Server Framework*
-![](./moon/yutu.png)
+![](./logo.png)
 
-### Installation
+### Requires
 - Linux, OS X, Windows Subsystem for Linux
 - Swoole4.2.12+
 - PHP7.1+
-```git
-$ git cloen https://github.com/TheMoonPalace/Yutu.git
-```
 
 ### Quick start
 ```sybase
-$ ./yutu init
+$ ./yserv init
 ```
 example:
 ```php
 <?php
-namespace app\controller;
+namespace App\Controller;
 
 
 class api
@@ -41,7 +38,7 @@ $ ./yutu start [app name]
 ```
 
 ### Config
-Initialization configuration file：run ./yutu init
+Initialization configuration file：run ./yserv init
 ```yaml
 # server port
 #port: 8080

@@ -6,7 +6,7 @@
  * Time: 10:58
  */
 
-namespace Yutu\net;
+namespace Yutu\Net;
 
 
 trait Response

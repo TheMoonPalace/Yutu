@@ -9,12 +9,10 @@
 namespace Yutu;
 
 
-use Yutu\database\Pool;
-use Yutu\helper\Logger;
-use Yutu\interfaces\IServerEvent;
-use Yutu\net\Controller;
-use Yutu\net\Request;
-use Yutu\net\Response;
+use Yutu\Database\Pool;
+use Yutu\Helper\Logger;
+use Yutu\Interfaces\IServerEvent;
+use Yutu\Net\Controller;
 
 class Event implements IServerEvent
 {
@@ -48,7 +46,7 @@ class Event implements IServerEvent
 
         // Task进程
         if ($workerId >= $server->setting['worker_num']) {
-            swoole_set_process_name("YT-TaskET");
+            swoole_set_process_name("YT-Tasker");
         // worker进程
         } else {
             Pool::I();
@@ -80,7 +78,7 @@ class Event implements IServerEvent
         }
 
         try {
-            $class  = APP_NAME . "\\controller\\{$uri[1]}";
+            $class  = "\\" . APP_NAME . "\\" . CTR_NAME . "\\{$uri[1]}";
             $func   = isset($uri[2]) ? $uri[2] : "index";
             $handle = new $class($request, $response);
 
