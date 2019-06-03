@@ -6,7 +6,7 @@
  * Time: 15:05
  */
 
-namespace Crontab;
+namespace crontab;
 
 
 use Yutu\Env;

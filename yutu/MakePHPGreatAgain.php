@@ -5,9 +5,8 @@
  * Date: 2019/5/10 0010
  * Time: 16:25
  */
+namespace Yutu;
 
-use Yutu\Env;
-use Yutu\YutuSw;
 
 class MakePHPGreatAgain
 {
@@ -34,7 +33,7 @@ class MakePHPGreatAgain
         }
 
         define("DI", $root);
-        define("APP_NAME", isset($args['name']) ? $args['name'] : "App");
+        define("APP_NAME", isset($args['name']) ? $args['name'] : "app");
 
         $this->autoload(__DIR__);
         Env::RegisterYutuRuntimeEnvironment();
@@ -74,7 +73,7 @@ class MakePHPGreatAgain
         {
             echo <<<EOT
 Yutu: unknown subcommand {$undefined}
-Run 'yutu help' for usage.
+Run 'yserv help' for usage.
 
 EOT;
         }
@@ -82,7 +81,7 @@ EOT;
         {
             echo <<<EOT
 Usage:
-    yutu command
+    yserv command
     
 The commands are:
     init         *initialization app

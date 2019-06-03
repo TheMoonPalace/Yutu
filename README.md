@@ -17,7 +17,7 @@ $ ./yserv init
 example:
 ```php
 <?php
-namespace App\Controller;
+namespace app\controller;
 
 
 class api 
@@ -25,7 +25,7 @@ class api
     public function get()
     {
         // OR
-        // extends Yutu\net\Controller
+        // extends Yutu\Net\Controller
         // $this->WriteAll("Welcome To The Moon Palace");
         return "Welcome To The Moon Palace";
     }
@@ -34,7 +34,7 @@ class api
 ```
 run app: 
 ```
-$ ./yutu start [app name]
+$ ./yserv start
 ```
 
 ### 配置

@@ -42,7 +42,7 @@ class Env
             $file = DI . "/" . self::YUTU_CONF_FILE;
             if (!file_exists($file)) return null;
 
-            self::$config = \Vendor\Spyc\Spyc::YAMLLoad($file);
+            self::$config = \vendor\Spyc\Spyc::YAMLLoad($file);
             self::$isLoad = true;
         }
 
@@ -86,12 +86,12 @@ class Env
     {
         date_default_timezone_set("Asia/Shanghai");
 
-        defined("CTR_NAME") or define("CTR_NAME", "Controller");
+        defined("CTR_NAME") or define("CTR_NAME", "controller");
         defined("PATH_APP") or define("PATH_APP", DI . "/" . APP_NAME);
         defined("PATH_CONTROLLER") or define("PATH_CONTROLLER", PATH_APP . "/" . CTR_NAME);
 
-        defined("PATH_CRONTAB") or define("PATH_CRONTAB", DI . "/Crontab");
-        defined("PATH_RUNTIME") or define("PATH_RUNTIME", DI . "/Runtime");
+        defined("PATH_CRONTAB") or define("PATH_CRONTAB", DI . "/crontab");
+        defined("PATH_RUNTIME") or define("PATH_RUNTIME", DI . "/runtime");
         defined("PATH_CONFIG_FILE") or define("PATH_CONFIG_FILE", DI . "/" . self::YUTU_CONF_FILE);
 
         defined("PATH_LOGS") or define("PATH_LOGS", PATH_RUNTIME . "/logs");
@@ -144,7 +144,7 @@ class Env
     {
         return <<<EOT
 # ================== server config ==================
-# server config https://yutu.aowu.io
+# server config https://yutu.hypot.xyz
 # swoole config https://wiki.swoole.com/wiki/
 
 # listen port

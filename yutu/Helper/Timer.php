@@ -182,7 +182,7 @@ class Timer
                 continue;
             }
 
-            $className = "Crontab\\$fileName[0]";
+            $className = "crontab\\$fileName[0]";
             $interface = (new \ReflectionClass($className))->getInterfaceNames();
 
             if (!in_array("Yutu\Interfaces\ICrontab", $interface)) {

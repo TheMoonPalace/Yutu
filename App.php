@@ -18,7 +18,7 @@ require_once "Yutu/MakePHPGreatAgain.php";
  * \_|  |_/ \__,_||_|\_\ \___| \_|    \_| |_/\_|      \____/|_|    \___| \__,_| \__| \_| |_/ \__, | \__,_||_||_| |_|
  *
  */
-new MakePHPGreatAgain(__DIR__, [
+new Yutu\MakePHPGreatAgain(__DIR__, [
     // 相关配置
-    'name' => 'App'
+    'name' => 'app'
 ]);
