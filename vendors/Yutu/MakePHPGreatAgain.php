@@ -33,6 +33,7 @@ class MakePHPGreatAgain
         }
 
         define("DI", $root);
+        define("CoreDI", dirname(__DIR__));
         define("APP_NAME", isset($args['name']) ? $args['name'] : "app");
 
         $this->autoload(__DIR__);
@@ -109,6 +110,10 @@ EOT;
 
             if (!file_exists($classPath)) {
                 $classPath = DI . '/' . str_replace('\\', '/', $class) . ".php";
+            }
+
+            if (!file_exists($classPath)) {
+                $classPath = CoreDI . '/' . str_replace('\\', '/', $class) . ".php";
             }
 
             if (!file_exists($classPath)) {

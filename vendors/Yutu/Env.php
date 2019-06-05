@@ -42,7 +42,7 @@ class Env
             $file = DI . "/" . self::YUTU_CONF_FILE;
             if (!file_exists($file)) return null;
 
-            self::$config = \vendor\Spyc\Spyc::YAMLLoad($file);
+            self::$config = \Spyc\Spyc::YAMLLoad($file);
             self::$isLoad = true;
         }
 
@@ -99,6 +99,7 @@ class Env
         defined("PATH_BACKUP") or define("PATH_BACKUP", PATH_RUNTIME . "/backup");
 
         !is_dir(PATH_APP) && mkdir(PATH_APP);
+        !is_dir(PATH_CRONTAB) && mkdir(PATH_CRONTAB);
         !is_dir(PATH_RUNTIME) && mkdir(PATH_RUNTIME);
         !is_dir(PATH_CONTROLLER) && mkdir(PATH_CONTROLLER);
 

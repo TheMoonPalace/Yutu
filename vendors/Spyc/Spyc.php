@@ -9,7 +9,7 @@
    * @license http://www.opensource.org/licenses/mit-license.php MIT License
    * @package Spyc
    */
-namespace vendor\Spyc;
+namespace Spyc;
 
 if (!function_exists('spyc_load')) {
   /**
