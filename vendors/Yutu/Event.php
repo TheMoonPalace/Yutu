@@ -11,6 +11,7 @@ namespace Yutu;
 
 use Yutu\Database\Pool;
 use Yutu\Helper\Logger;
+use Yutu\Helper\YRedis;
 use Yutu\Interfaces\IServerEvent;
 use Yutu\Net\Controller;
 
@@ -50,6 +51,7 @@ class Event implements IServerEvent
         // worker进程
         } else {
             Pool::I();
+            YRedis::I();
             swoole_set_process_name("YT-Worker");
         }
     }
