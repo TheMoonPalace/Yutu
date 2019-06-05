@@ -9,6 +9,8 @@
 namespace Yutu\Net;
 
 
+use Yutu\Type\CoroutineExitException;
+
 class Controller
 {
     use Request;
@@ -24,6 +26,34 @@ class Controller
         $this->request  = $request;
         $this->response = $response;
 
+        // Ajax option
+        if ($request->header['method'] == "OPTIONS") {
+            $this->echoCORS(); exit;
+        }
+
         $this->SetHeader("server", "Yutu");
     }
+
+    /**
+     * @param string $domain
+     */
+    protected function echoCORS($domain = "")
+    {
+        if (!empty($domain)) {
+            header("Access-Control-Allow-Headers: Content-Type");
+        }
+
+        header("Access-Control-Allow-Origin: " . $domain ? $domain : "*");
+        header("Access-Control-Allow-Credentials: true");
+    }
+
+    /**
+     * @param string $msg
+     * @throws CoroutineExitException
+     */
+    protected function goExit($msg = "")
+    {
+        throw new CoroutineExitException($msg);
+    }
+
 }

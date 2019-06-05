@@ -14,6 +14,7 @@ use Yutu\Helper\Logger;
 use Yutu\Helper\YRedis;
 use Yutu\Interfaces\IServerEvent;
 use Yutu\Net\Controller;
+use Yutu\Type\CoroutineExitException;
 
 class Event implements IServerEvent
 {
@@ -50,8 +51,7 @@ class Event implements IServerEvent
             swoole_set_process_name("YT-Tasker");
         // worker进程
         } else {
-            Pool::I();
-            YRedis::I();
+            Pool::I(); YRedis::I();
             swoole_set_process_name("YT-Worker");
         }
     }
@@ -97,7 +97,10 @@ class Event implements IServerEvent
             }
 
             // 如果已经WriteAll则无法再次WriteAll
+            $ctrl->isReturn = $handle->isReturn;
             !$handle->isReturn && $handle->WriteAll($response);
+        } catch (CoroutineExitException $e) {
+            !$ctrl->isReturn && $ctrl->WriteAll(null);
         } catch (\ParseError $e) {
             Logger::Exception($e);
             $ctrl->WriteAll(null, "Internal Server Error", 500);
