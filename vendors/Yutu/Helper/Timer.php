@@ -61,7 +61,8 @@ class Timer
             swoole_set_process_name("YT-Soldier");
 
             // 装入作业
-            $this->loadTask(PATH_CRONTAB);
+            $this->loadTask(PATH_CRONTAB, "crontab");
+            $this->loadTask(CoreDI . "/Yutu/Crontab", "Yutu\Crontab");
 
             // 将管道加入到事件循环中，变为异步模式
             swoole_event_add($process->pipe, function () use ($process) {
@@ -162,9 +163,10 @@ class Timer
     /**
      * 加载作业文件
      * @param $path
+     * @param $namespace
      * @throws \ReflectionException
      */
-    private function loadTask($path)
+    private function loadTask($path, $namespace)
     {
         if (!is_dir($path)) {
             logger::ExtremelySerious("`$path` Not a directory");
@@ -182,7 +184,7 @@ class Timer
                 continue;
             }
 
-            $className = "Crontab\\$fileName[0]";
+            $className = "$namespace\\$fileName[0]";
             $interface = (new \ReflectionClass($className))->getInterfaceNames();
 
             if (!in_array("Yutu\Interfaces\ICrontab", $interface)) {

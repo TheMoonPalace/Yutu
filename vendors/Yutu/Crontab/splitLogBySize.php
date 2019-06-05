@@ -6,7 +6,7 @@
  * Time: 15:05
  */
 
-namespace Crontab;
+namespace Yutu\Crontab;
 
 
 use Yutu\Env;
@@ -34,7 +34,7 @@ class splitLogBySize implements ICrontab
     }
 
     /**
-     * 5秒执行一次
+     * 两分钟秒执行一次
      * @return int|mixed
      */
     public function Time()

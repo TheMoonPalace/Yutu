@@ -57,11 +57,10 @@ class Pool
     {
         if (empty(self::$instance))
         {
-
             self::$instance = new self();
             self::$instance->max = Env::Config('db-pool', 4);
+            self::$instance->type = Env::Config("db-type", "mysql");
             self::$instance->queue = new \Swoole\Coroutine\Channel( self::$instance->max);
-            self::$instance->type  = Env::Config("db-type", "mysql");
 
             for ($i = 0; $i < self::$instance->max; $i++) {
                 self::$instance->connect();

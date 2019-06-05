@@ -17,7 +17,7 @@ $ ./yserv init
 example:
 ```php
 <?php
-namespace App\Controller;
+namespace app\controller;
 
 
 class api
@@ -34,7 +34,7 @@ class api
 ```
 run app: 
 ```
-$ ./yutu start [app name]
+$ ./yserv start
 ```
 
 ### Config
