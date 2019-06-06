@@ -20,15 +20,16 @@ class Controller
      * Controller constructor.
      * @param \Swoole\Http\Request $request
      * @param \Swoole\Http\Response $response
+     * @throws CoroutineExitException
      */
     public function __construct(\Swoole\Http\Request &$request, \Swoole\Http\Response &$response)
     {
         $this->request  = $request;
         $this->response = $response;
 
-        // Ajax option
-        if ($request->header['method'] == "OPTIONS") {
-            $this->echoCORS(); exit;
+        // CORS option
+        if ($this->request->server['request_method'] == "OPTIONS") {
+            $this->echoCORS(); $this->goExit();
         }
 
         $this->SetHeader("server", "Yutu");

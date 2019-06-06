@@ -69,6 +69,7 @@ class Event implements IServerEvent
      * @param \Swoole\Http\Request $request
      * @param \Swoole\Http\Response $response
      * @return mixed|void
+     * @throws CoroutineExitException
      */
     public static function NewRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
@@ -100,7 +101,7 @@ class Event implements IServerEvent
             $ctrl->isReturn = $handle->isReturn;
             !$handle->isReturn && $handle->WriteAll($response);
         } catch (CoroutineExitException $e) {
-            !$ctrl->isReturn && $ctrl->WriteAll(null);
+            // end
         } catch (\ParseError $e) {
             Logger::Exception($e);
             $ctrl->WriteAll(null, "Internal Server Error", 500);
