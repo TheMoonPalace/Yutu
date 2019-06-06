@@ -101,12 +101,12 @@ class Pool
             case "mysql":
                 $swm = new \Swoole\Coroutine\MySQL();
 
-                $lin = $swm->connect([
-                    'host' => '127.0.0.1',
-                    'port' => 3306,
-                    'user' => 'root',
-                    'password' => 'root',
-                    'database' => 'aowuka',
+                $swm->connect([
+                    'host' => Env::Config("db-host", "127.0.0.1"),
+                    'port' => Env::Config("db-port", 3306),
+                    'user' => Env::Config("db-user", ""),
+                    'database' => Env::Config("db-name", ""),
+                    'password' => Env::Config("db-password", ""),
                 ]);
 
                 $this->queue->push($swm);

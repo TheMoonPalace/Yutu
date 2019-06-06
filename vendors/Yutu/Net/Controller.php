@@ -32,6 +32,11 @@ class Controller
             $this->echoCORS(); $this->goExit();
         }
 
+        // application/json
+        if ($this->request->header['content-type'] == "application/json") {
+            $this->request->post = json_decode($this->request->rawContent(), true);
+        }
+
         $this->SetHeader("server", "Yutu");
     }
 
@@ -41,11 +46,11 @@ class Controller
     protected function echoCORS($domain = "")
     {
         if (!empty($domain)) {
-            header("Access-Control-Allow-Headers: Content-Type");
+            $this->SetHeader("Access-Control-Allow-Headers", "Content-Type");
         }
 
-        header("Access-Control-Allow-Origin: " . $domain ? $domain : "*");
-        header("Access-Control-Allow-Credentials: true");
+        $this->SetHeader("Access-Control-Allow-Origin", $domain ? $domain : "*");
+        $this->SetHeader("Access-Control-Allow-Credentials", "true");
     }
 
     /**

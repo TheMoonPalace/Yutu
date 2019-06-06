@@ -35,6 +35,7 @@ class MakePHPGreatAgain
         define("DI", $root);
         define("CoreDI", dirname(__DIR__));
         define("APP_NAME", isset($args['name']) ? $args['name'] : "app");
+        define("CTR_NAME", isset($args['controller']) ? $args['controller'] : "controller");
 
         $this->autoload(__DIR__);
         Env::RegisterYutuRuntimeEnvironment();

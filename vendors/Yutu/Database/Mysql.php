@@ -66,18 +66,22 @@ class Mysql implements IDatabase
     {
         try {
             $stat = $this->link->prepare($sql);
+
+            if (!$stat) {
+                $this->error($this->link->error, $sql); return [];
+            }
+
             $exec = $stat->execute($prepare);
 
             if ($exec !== false) {
-                return $fetch ? $exec[0] : $exec;
+                return $fetch && !empty($exec) ? $exec[0] : $exec;
             }
 
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($stat->error));
-            return [];
+            $this->error($stat->error, $sql);
         } catch (\Exception $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         } catch (\Error $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         }
 
         return [];
@@ -92,18 +96,22 @@ class Mysql implements IDatabase
     {
         try {
             $stat = $this->link->prepare($sql);
+
+            if (!$stat) {
+                $this->error($this->link->error, $sql); return 0;
+            }
+
             $exec = $stat->execute($prepare);
 
             if ($exec !== false) {
                 return $stat->affected_rows;
             }
 
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($stat->error));
-            return 0;
+            $this->error($stat->error, $sql);
         } catch (\Exception $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         } catch (\Error $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         }
 
         return 0;
@@ -125,18 +133,22 @@ class Mysql implements IDatabase
 
         try {
             $stat = $this->link->prepare($sql);
+
+            if (!$stat) {
+                $this->error($this->link->error, $sql); return 0;
+            }
+
             $exec = $stat->execute($set['p']);
 
             if ($exec !== false) {
                 return $stat->insert_id;
             }
 
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($stat->error));
-            return 0;
+            $this->error($stat->error, $sql);
         } catch (\Exception $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         } catch (\Error $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         }
 
         return 0;
@@ -160,18 +172,22 @@ class Mysql implements IDatabase
 
         try {
             $stat = $this->link->prepare($sql);
+
+            if (!$stat) {
+                $this->error($this->link->error, $sql); return 0;
+            }
+
             $exec = $stat->execute(array_merge($set['p'], $condition['p']));
 
             if ($exec !== false) {
                 return true;
             }
 
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($stat->error));
-            return false;
+            $this->error($stat->error, $sql);
         } catch (\Exception $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         } catch (\Error $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         }
 
         return false;
@@ -208,18 +224,22 @@ class Mysql implements IDatabase
 
         try {
             $stat = $this->link->prepare($sql);
+
+            if (!$stat) {
+                $this->error($this->link->error, $sql); return [];
+            }
+
             $exec = $stat->execute($condition['p']);
 
             if ($exec !== false) {
-                return $fetch ? $exec[0] : $exec;
+                return $fetch && !empty($exec) ? $exec[0] : $exec;
             }
 
-            Logger::Exception("[SQL]:" . $sql . "\n");
-            return [];
+            $this->error($stat->error, $sql);
         } catch (\Exception $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         } catch (\Error $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         }
 
         return [];
@@ -241,18 +261,22 @@ class Mysql implements IDatabase
 
         try {
             $stat = $this->link->prepare($sql);
+
+            if (!$stat) {
+                $this->error($this->link->error, $sql); return 0;
+            }
+
             $exec = $stat->execute($where['p']);
 
             if ($exec !== false) {
                 return $stat->affected_rows;
             }
 
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($stat->error));
-            return 0;
+            $this->error($stat->error, $sql);
         } catch (\Exception $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         } catch (\Error $e) {
-            Logger::Exception("[SQL]:" . $sql . "\n" . var_export($e->getMessage()));
+            $this->error($e, $sql);
         }
 
         return 0;
@@ -276,7 +300,7 @@ class Mysql implements IDatabase
             if (is_array($value)) {
                 $set .= "$key {$value[0]} " . addslashes($value[1]) . ',';
             } else {
-                $set .=  "{$key}=:_{$key},";
+                $set .=  "{$key}=?,";
                 $prepare_data["_{$key}"] = addslashes($value);
             }
         }
@@ -311,7 +335,7 @@ class Mysql implements IDatabase
             else
             {
                 $k = str_replace(".", "", $key);
-                $condition .= "$key=:_{$k}_";
+                $condition .= "$key=?";
                 $prepare_data["_{$k}_"] = $value;
             }
 
@@ -320,4 +344,18 @@ class Mysql implements IDatabase
 
         return ['c' => trim($condition, ' AND '), 'p' => $prepare_data];
     }
+
+    /**
+     * @param $e
+     * @param $sql
+     */
+    private function error($e, $sql)
+    {
+        if (is_object($e)) {
+            Logger::Exception("[SQL]:" . var_export($e->getMessage()) . "; " . $sql . "\n" );
+        } else {
+            Logger::Exception("[SQL]:" . var_export($e, true) . "; " . $sql . "\n");
+        }
+    }
+
 }
