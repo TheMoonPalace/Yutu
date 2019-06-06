@@ -117,7 +117,7 @@ EOT;
             }
 
             if (!file_exists($classPath)) {
-                throw new \Exception("File Not Found: $classPath");
+                throw new \Exception("Undefined Class: $class, File: $class, Path: $classPath");
             }
 
             file_exists($classPath) && require_once $classPath;
