@@ -84,9 +84,9 @@ class Env
      */
     public static function RegisterYutuRuntimeEnvironment()
     {
+        session_start();
         date_default_timezone_set("Asia/Shanghai");
 
-        defined("CTR_NAME") or define("CTR_NAME", "controller");
         defined("PATH_APP") or define("PATH_APP", DI . "/" . APP_NAME);
         defined("PATH_CONTROLLER") or define("PATH_CONTROLLER", PATH_APP . "/" . CTR_NAME);
 

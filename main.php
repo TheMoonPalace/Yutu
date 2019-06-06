@@ -17,6 +17,8 @@ require_once "vendors/Yutu/MakePHPGreatAgain.php";
  *
  */
 new Yutu\MakePHPGreatAgain(__DIR__, [
-    // 相关配置
+    // 入口目录名
     'name' => 'app',
+    // 控制器目录名
+    'controller' => 'api',
 ]);

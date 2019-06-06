@@ -10,6 +10,7 @@ namespace Yutu;
 
 
 use Yutu\Helper\Timer;
+use Yutu\Helper\YRedis;
 use Yutu\Net\HttpServer;
 use Yutu\Helper\Logger;
 
@@ -55,6 +56,8 @@ class YutuSw
     // 创建服务
     public function CreateHTTPServer()
     {
+        $this->dependentTest();
+
         HttpServer::I()->Create();
         HttpServer::I()->Register();
 
@@ -91,6 +94,14 @@ class YutuSw
 
         exec("kill -" . SIGTERM . " " . $masterId);
         exec(str_replace(" ", "\ ", DI) . "/" . basename($argv[0]) . " ". Env::YUTU_SYS_START);
+    }
+
+    // 进行环境测试
+    private function dependentTest()
+    {
+        if (!YRedis::T()) {
+            exit;
+        }
     }
 
 }

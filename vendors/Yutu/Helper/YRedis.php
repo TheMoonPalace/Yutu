@@ -51,7 +51,11 @@ class YRedis
 
             // TODO 同步redis
             self::$instance->phpRedis = new \Redis();
-            self::$instance->phpRedis->connect($host, $port);
+
+            if (!self::$instance->phpRedis->connect($host, $port)) {
+                Logger::ExtremelySerious();
+            }
+
             self::$instance->phpRedis->select($dbId);
 
             // TODO 异步redis
@@ -59,6 +63,24 @@ class YRedis
         }
 
         return self::$instance;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function T()
+    {
+        $port = Env::Config("redis-port", 6379);
+        $host = Env::Config("redis-host", "127.0.0.1");
+
+        $redis = new \Redis();
+
+        if (!$redis->connect($host, $port)) {
+            return false;
+        }
+
+        $redis->close();
+        return true;
     }
 
     /**
