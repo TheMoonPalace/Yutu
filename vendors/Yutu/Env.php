@@ -28,7 +28,7 @@ class Env
     // 加载的配置文件配置
     private static $config = [];
     // flag
-    private static $isLoad = false;
+    private static $isLoadC = false;
 
     /**
      * @param string $key
@@ -37,13 +37,13 @@ class Env
      */
     public static function Config(string $key = "", $default = null)
     {
-        if (!self::$isLoad)
+        if (!self::$isLoadC)
         {
             $file = DI . "/" . self::YUTU_CONF_FILE;
             if (!file_exists($file)) return null;
 
             self::$config = \Spyc\Spyc::YAMLLoad($file);
-            self::$isLoad = true;
+            self::$isLoadC = true;
         }
 
         if (empty($key)) {
@@ -58,6 +58,7 @@ class Env
 
         return $default;
     }
+
     /**
      * 获取server pid
      * @return bool|false|string

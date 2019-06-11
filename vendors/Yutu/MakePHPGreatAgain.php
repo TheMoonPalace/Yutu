@@ -37,6 +37,9 @@ class MakePHPGreatAgain
         define("APP_NAME", isset($args['name']) ? $args['name'] : "app");
         define("CTR_NAME", isset($args['controller']) ? $args['controller'] : "controller");
 
+        define("USE_REDIS", isset($args['redis']) ? $args['redis'] : false);
+        define("USE_ROUTE", isset($args['route']) ? $args['route'] : false);
+
         $this->autoload(__DIR__);
         Env::RegisterYutuRuntimeEnvironment();
         Env::RegisterYutuRuntimeExceptionHandler();
