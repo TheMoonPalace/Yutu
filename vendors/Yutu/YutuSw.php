@@ -99,7 +99,7 @@ class YutuSw
     // 进行环境测试
     private function dependentTest()
     {
-        if (!YRedis::T()) {
+        if (USE_REDIS && !YRedis::T()) {
             exit;
         }
     }

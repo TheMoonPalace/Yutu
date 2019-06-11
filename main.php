@@ -20,5 +20,11 @@ new Yutu\MakePHPGreatAgain(__DIR__, [
     // 入口目录名
     'name' => 'app',
     // 控制器目录名
-    'controller' => 'api',
+    'controller' => 'controller',
+
+    // 是否启用redis
+    'redis' => false,
+    // 是否启用自定义路由映射
+    'route' => true,
+
 ]);

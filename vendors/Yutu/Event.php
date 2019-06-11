@@ -51,7 +51,8 @@ class Event implements IServerEvent
             swoole_set_process_name("YT-Tasker");
         // worker进程
         } else {
-            Pool::I(); YRedis::I();
+            Pool::I();
+            USE_REDIS && YRedis::I();
             swoole_set_process_name("YT-Worker");
         }
     }
@@ -74,23 +75,22 @@ class Event implements IServerEvent
     public static function NewRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
         $ctrl = new Controller($request, $response);
-        $uri  = explode("/", $request->server['request_uri']);
+        $uri = Routes::Resolver($request->server['request_uri']);
 
-        if (!isset($uri[1]) || empty($uri[1])) {
-            $ctrl->WriteAll(null, "404 Not Found", "404");
+        if (empty($uri['class'])) {
+            $ctrl->WriteAll(null, "File Not Found", 404); return ;
         }
 
         try {
-            $class  = "\\" . APP_NAME . "\\" . CTR_NAME . "\\{$uri[1]}";
-            $func   = isset($uri[2]) ? $uri[2] : "index";
+            $class  = "\\" . APP_NAME . "\\" . CTR_NAME . "\\{$uri['class']}";
             $handle = new $class($request, $response);
 
-            if (!method_exists($handle, $func)) {
-                $ctrl->WriteAll(null, "Method Not Found: $func", 404); return ;
+            if (!empty($uri['method']) && !method_exists($handle, $uri['method'])) {
+                $ctrl->WriteAll(null, "Method Not Found: {$uri['method']}", 404); return ;
             }
 
             // 控制器可直接return 或者 直接WriteAll
-            $response = $handle->{$func}();
+            $response = !empty($uri['method']) ? $handle->{$uri['method']}() : "";
 
             // 防止控制器未继承Controller类
             if (!method_exists($handle, "WriteAll")) {
