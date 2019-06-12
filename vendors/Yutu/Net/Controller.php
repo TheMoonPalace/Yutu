@@ -17,6 +17,16 @@ class Controller
     use Response;
 
     /**
+     * @var array
+     */
+    protected $get = [];
+
+    /**
+     * @var array
+     */
+    protected $post = [];
+
+    /**
      * Controller constructor.
      * @param \Swoole\Http\Request $request
      * @param \Swoole\Http\Response $response
@@ -36,6 +46,9 @@ class Controller
         if ($this->request->header['content-type'] == "application/json") {
             $this->request->post = json_decode($this->request->rawContent(), true);
         }
+
+        $this->get  = $this->request->get;
+        $this->post = $this->request->post;
 
         $this->SetHeader("server", "Yutu");
     }

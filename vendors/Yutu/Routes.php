@@ -56,6 +56,8 @@ class Routes
                     $theKey = $pat[0];
                 }
             }
+
+            $theKey .= !empty($theKey) ? "*" : "";
         } else {
             $theKey = $uri;
         }
@@ -64,7 +66,7 @@ class Routes
         {
             $forward = explode("/", self::$routes[$theKey]);
             $theClass = $forward[0];
-            $theMethod = $forward[1];
+            $theMethod = !isset($forward[1]) ? null : $forward[1];
         }
 
         return ['class' => $theClass, 'method' => $theMethod];
